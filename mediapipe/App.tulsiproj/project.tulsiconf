@@ -1,0 +1,17 @@
+{
+  "configDefaults" : {
+    "optionSet" : {
+      "CLANG_CXX_LANGUAGE_STANDARD" : {
+        "p" : "c++14"
+      }
+    }
+  },
+  "packages" : [
+    "",
+    "mediapipe",
+    "mediapipe/objc",
+    "mediapipe/app/handtrackinggpu"
+  ],
+  "projectName" : "Mediapipe",
+  "workspaceRoot" : "../.."
+}
