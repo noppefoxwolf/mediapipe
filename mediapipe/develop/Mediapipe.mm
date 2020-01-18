@@ -10,7 +10,7 @@ static const char* kOutputStream = "output_video";
 static const char* kLandmarksOutputStream = "hand_landmarks";
 static const char* kVideoQueueLabel = "com.google.mediapipe.example.videoQueue";
 
-@interface Tracker() <MPPGraphDelegate>
+@interface HandTracker() <MPPGraphDelegate>
 @property(nonatomic) MPPGraph* mediapipeGraph;
 @end
 
@@ -18,10 +18,7 @@ static const char* kVideoQueueLabel = "com.google.mediapipe.example.videoQueue";
 - (instancetype)initWithX:(float)x y:(float)y z:(float)z;
 @end
 
-@implementation Tracker {
-    /// Process camera frames on this queue.
-    dispatch_queue_t _videoQueue;
-}
+@implementation HandTracker {}
 
 #pragma mark - Cleanup methods
 
@@ -64,11 +61,6 @@ static const char* kVideoQueueLabel = "com.google.mediapipe.example.videoQueue";
 {
     self = [super init];
     if (self) {
-        
-        dispatch_queue_attr_t qosAttribute = dispatch_queue_attr_make_with_qos_class(
-                                                                                     DISPATCH_QUEUE_SERIAL, QOS_CLASS_USER_INTERACTIVE, /*relative_priority=*/0);
-        _videoQueue = dispatch_queue_create(kVideoQueueLabel, qosAttribute);
-        
         self.mediapipeGraph = [[self class] loadGraphFromResource:kGraphName];
         self.mediapipeGraph.delegate = self;
         // Set maxFramesInFlight to a small value to avoid memory contention for real-time processing.
@@ -91,13 +83,9 @@ static const char* kVideoQueueLabel = "com.google.mediapipe.example.videoQueue";
 - (void)mediapipeGraph:(MPPGraph*)graph
   didOutputPixelBuffer:(CVPixelBufferRef)pixelBuffer
             fromStream:(const std::string&)streamName {
-    //  if (streamName == kOutputStream) {
-    //    // Display the captured image on the screen.
-    //    CVPixelBufferRetain(pixelBuffer);
-    //    dispatch_async(dispatch_get_main_queue(), ^{
-    //      CVPixelBufferRelease(pixelBuffer);
-    //    });
-    //  }
+      if (streamName == kOutputStream) {
+          [_delegate handTracker: self didOutputPixelBuffer: pixelBuffer];
+      }
 }
 
 // Receives a raw packet from the MediaPipe graph. Invoked on a MediaPipe worker thread.
@@ -119,13 +107,10 @@ static const char* kVideoQueueLabel = "com.google.mediapipe.example.videoQueue";
                                                            z:landmarks.landmark(i).z()];
             [result addObject:landmark];
         }
-        [_delegate didReceived: result];
+        [_delegate handTracker: self didOutputLandmarks: result];
     }
 }
 
-#pragma mark - MPPInputSourceDelegate methods
-
-// Must be invoked on _videoQueue.
 - (void)processVideoFrame:(CVPixelBufferRef)imageBuffer {
     [self.mediapipeGraph sendPixelBuffer:imageBuffer
                               intoStream:kInputStream

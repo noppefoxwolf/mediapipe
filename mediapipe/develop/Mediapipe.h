@@ -2,13 +2,15 @@
 #import <CoreVideo/CoreVideo.h>
 
 @class Landmark;
+@class HandTracker;
 
 @protocol TrackerDelegate <NSObject>
 @optional
-- (void)didReceived: (NSArray<Landmark *> *)landmarks;
+- (void)handTracker: (HandTracker*)handTracker didOutputLandmarks: (NSArray<Landmark *> *)landmarks;
+- (void)handTracker: (HandTracker*)handTracker didOutputPixelBuffer: (CVPixelBufferRef)pixelBuffer;
 @end
 
-@interface Tracker : NSObject
+@interface HandTracker : NSObject
 - (instancetype)init;
 - (void)startGraph;
 - (void)processVideoFrame:(CVPixelBufferRef)imageBuffer;
