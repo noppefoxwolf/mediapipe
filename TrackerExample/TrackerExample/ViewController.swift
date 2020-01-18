@@ -1,6 +1,5 @@
 //
 //  ViewController.swift
-//  Y2R
 //
 //  Created by Tomoya Hirano on 2020/01/09.
 //  Copyright © 2020 Tomoya Hirano. All rights reserved.

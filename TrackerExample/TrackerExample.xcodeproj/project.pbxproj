@@ -17,6 +17,10 @@
 		373B5F4D23D368A70065C67C /* MyFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 373B5F4C23D368A70065C67C /* MyFramework.framework */; };
 		373B5F4E23D368A70065C67C /* MyFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 373B5F4C23D368A70065C67C /* MyFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		373B5F5123D36A170065C67C /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 373B5F5023D369280065C67C /* libc++.tbd */; };
+		373B5F6023D36B660065C67C /* hand_tracking_mobile_gpu.binarypb in Resources */ = {isa = PBXBuildFile; fileRef = 373B5F5C23D36B660065C67C /* hand_tracking_mobile_gpu.binarypb */; };
+		373B5F6123D36B660065C67C /* hand_landmark.tflite in Resources */ = {isa = PBXBuildFile; fileRef = 373B5F5D23D36B660065C67C /* hand_landmark.tflite */; };
+		373B5F6223D36B660065C67C /* palm_detection.tflite in Resources */ = {isa = PBXBuildFile; fileRef = 373B5F5E23D36B660065C67C /* palm_detection.tflite */; };
+		373B5F6323D36B660065C67C /* palm_detection_labelmap.txt in Resources */ = {isa = PBXBuildFile; fileRef = 373B5F5F23D36B660065C67C /* palm_detection_labelmap.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -45,6 +49,10 @@
 		373B5F4923D368660065C67C /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		373B5F4C23D368A70065C67C /* MyFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MyFramework.framework; path = "../../../../../../../../var/tmp/_bazel_noppe/11faeb8ce054d9f5a5df6953790617cd/execroot/mediapipe/bazel-out/ios_arm64-fastbuild/bin/mediapipe/develop/MyFramework.framework"; sourceTree = "<group>"; };
 		373B5F5023D369280065C67C /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		373B5F5C23D36B660065C67C /* hand_tracking_mobile_gpu.binarypb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hand_tracking_mobile_gpu.binarypb; sourceTree = "<group>"; };
+		373B5F5D23D36B660065C67C /* hand_landmark.tflite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hand_landmark.tflite; sourceTree = "<group>"; };
+		373B5F5E23D36B660065C67C /* palm_detection.tflite */ = {isa = PBXFileReference; lastKnownFileType = file; path = palm_detection.tflite; sourceTree = "<group>"; };
+		373B5F5F23D36B660065C67C /* palm_detection_labelmap.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = palm_detection_labelmap.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +88,7 @@
 		373B5F3423D3673F0065C67C /* TrackerExample */ = {
 			isa = PBXGroup;
 			children = (
+				373B5F5B23D36B660065C67C /* Resources */,
 				373B5F3523D3673F0065C67C /* AppDelegate.swift */,
 				373B5F3723D3673F0065C67C /* art.scnassets */,
 				373B5F3923D3673F0065C67C /* ViewController.swift */,
@@ -99,6 +108,17 @@
 				373B5F4C23D368A70065C67C /* MyFramework.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		373B5F5B23D36B660065C67C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				373B5F5C23D36B660065C67C /* hand_tracking_mobile_gpu.binarypb */,
+				373B5F5D23D36B660065C67C /* hand_landmark.tflite */,
+				373B5F5E23D36B660065C67C /* palm_detection.tflite */,
+				373B5F5F23D36B660065C67C /* palm_detection_labelmap.txt */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -161,8 +181,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				373B5F3823D3673F0065C67C /* art.scnassets in Resources */,
+				373B5F6223D36B660065C67C /* palm_detection.tflite in Resources */,
 				373B5F4223D367420065C67C /* LaunchScreen.storyboard in Resources */,
+				373B5F6123D36B660065C67C /* hand_landmark.tflite in Resources */,
+				373B5F6023D36B660065C67C /* hand_tracking_mobile_gpu.binarypb in Resources */,
 				373B5F3F23D367420065C67C /* Assets.xcassets in Resources */,
+				373B5F6323D36B660065C67C /* palm_detection_labelmap.txt in Resources */,
 				373B5F3D23D3673F0065C67C /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
