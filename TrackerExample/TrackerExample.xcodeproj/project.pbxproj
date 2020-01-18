@@ -14,23 +14,19 @@
 		373B5F3F23D367420065C67C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 373B5F3E23D367420065C67C /* Assets.xcassets */; };
 		373B5F4223D367420065C67C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 373B5F4023D367420065C67C /* LaunchScreen.storyboard */; };
 		373B5F4A23D368660065C67C /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373B5F4923D368660065C67C /* Extensions.swift */; };
-		373B5F4D23D368A70065C67C /* MyFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 373B5F4C23D368A70065C67C /* MyFramework.framework */; };
-		373B5F4E23D368A70065C67C /* MyFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 373B5F4C23D368A70065C67C /* MyFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		373B5F5123D36A170065C67C /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 373B5F5023D369280065C67C /* libc++.tbd */; };
-		373B5F6023D36B660065C67C /* hand_tracking_mobile_gpu.binarypb in Resources */ = {isa = PBXBuildFile; fileRef = 373B5F5C23D36B660065C67C /* hand_tracking_mobile_gpu.binarypb */; };
-		373B5F6123D36B660065C67C /* hand_landmark.tflite in Resources */ = {isa = PBXBuildFile; fileRef = 373B5F5D23D36B660065C67C /* hand_landmark.tflite */; };
-		373B5F6223D36B660065C67C /* palm_detection.tflite in Resources */ = {isa = PBXBuildFile; fileRef = 373B5F5E23D36B660065C67C /* palm_detection.tflite */; };
-		373B5F6323D36B660065C67C /* palm_detection_labelmap.txt in Resources */ = {isa = PBXBuildFile; fileRef = 373B5F5F23D36B660065C67C /* palm_detection_labelmap.txt */; };
+		373B5F6423D380D10065C67C /* MyFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 373B5F4C23D368A70065C67C /* MyFramework.framework */; };
+		373B5F6523D380D10065C67C /* MyFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 373B5F4C23D368A70065C67C /* MyFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		373B5F4F23D368A70065C67C /* Embed Frameworks */ = {
+		373B5F6623D380D10065C67C /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				373B5F4E23D368A70065C67C /* MyFramework.framework in Embed Frameworks */,
+				373B5F6523D380D10065C67C /* MyFramework.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -49,10 +45,7 @@
 		373B5F4923D368660065C67C /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		373B5F4C23D368A70065C67C /* MyFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MyFramework.framework; path = "../../../../../../../../var/tmp/_bazel_noppe/11faeb8ce054d9f5a5df6953790617cd/execroot/mediapipe/bazel-out/ios_arm64-fastbuild/bin/mediapipe/develop/MyFramework.framework"; sourceTree = "<group>"; };
 		373B5F5023D369280065C67C /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
-		373B5F5C23D36B660065C67C /* hand_tracking_mobile_gpu.binarypb */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = hand_tracking_mobile_gpu.binarypb; sourceTree = "<group>"; };
-		373B5F5D23D36B660065C67C /* hand_landmark.tflite */ = {isa = PBXFileReference; lastKnownFileType = file; path = hand_landmark.tflite; sourceTree = "<group>"; };
-		373B5F5E23D36B660065C67C /* palm_detection.tflite */ = {isa = PBXFileReference; lastKnownFileType = file; path = palm_detection.tflite; sourceTree = "<group>"; };
-		373B5F5F23D36B660065C67C /* palm_detection_labelmap.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = palm_detection_labelmap.txt; sourceTree = "<group>"; };
+		373B5F6723D381C30065C67C /* TrackerExample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TrackerExample-Bridging-Header.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,7 +54,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				373B5F5123D36A170065C67C /* libc++.tbd in Frameworks */,
-				373B5F4D23D368A70065C67C /* MyFramework.framework in Frameworks */,
+				373B5F6423D380D10065C67C /* MyFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -88,7 +81,6 @@
 		373B5F3423D3673F0065C67C /* TrackerExample */ = {
 			isa = PBXGroup;
 			children = (
-				373B5F5B23D36B660065C67C /* Resources */,
 				373B5F3523D3673F0065C67C /* AppDelegate.swift */,
 				373B5F3723D3673F0065C67C /* art.scnassets */,
 				373B5F3923D3673F0065C67C /* ViewController.swift */,
@@ -97,6 +89,7 @@
 				373B5F4023D367420065C67C /* LaunchScreen.storyboard */,
 				373B5F4323D367420065C67C /* Info.plist */,
 				373B5F4923D368660065C67C /* Extensions.swift */,
+				373B5F6723D381C30065C67C /* TrackerExample-Bridging-Header.h */,
 			);
 			path = TrackerExample;
 			sourceTree = "<group>";
@@ -110,17 +103,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		373B5F5B23D36B660065C67C /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				373B5F5C23D36B660065C67C /* hand_tracking_mobile_gpu.binarypb */,
-				373B5F5D23D36B660065C67C /* hand_landmark.tflite */,
-				373B5F5E23D36B660065C67C /* palm_detection.tflite */,
-				373B5F5F23D36B660065C67C /* palm_detection_labelmap.txt */,
-			);
-			path = Resources;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -131,7 +113,7 @@
 				373B5F2E23D3673F0065C67C /* Sources */,
 				373B5F2F23D3673F0065C67C /* Frameworks */,
 				373B5F3023D3673F0065C67C /* Resources */,
-				373B5F4F23D368A70065C67C /* Embed Frameworks */,
+				373B5F6623D380D10065C67C /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -154,6 +136,7 @@
 				TargetAttributes = {
 					373B5F3123D3673F0065C67C = {
 						CreatedOnToolsVersion = 11.3;
+						LastSwiftMigration = 1130;
 					};
 				};
 			};
@@ -181,12 +164,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				373B5F3823D3673F0065C67C /* art.scnassets in Resources */,
-				373B5F6223D36B660065C67C /* palm_detection.tflite in Resources */,
 				373B5F4223D367420065C67C /* LaunchScreen.storyboard in Resources */,
-				373B5F6123D36B660065C67C /* hand_landmark.tflite in Resources */,
-				373B5F6023D36B660065C67C /* hand_tracking_mobile_gpu.binarypb in Resources */,
 				373B5F3F23D367420065C67C /* Assets.xcassets in Resources */,
-				373B5F6323D36B660065C67C /* palm_detection_labelmap.txt in Resources */,
 				373B5F3D23D3673F0065C67C /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -344,6 +323,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = FBQ6Z8AF3U;
 				ENABLE_BITCODE = NO;
@@ -357,6 +337,8 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.noppelab.TrackerExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TrackerExample/TrackerExample-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -366,6 +348,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = FBQ6Z8AF3U;
 				ENABLE_BITCODE = NO;
@@ -379,6 +362,7 @@
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.noppelab.TrackerExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "TrackerExample/TrackerExample-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

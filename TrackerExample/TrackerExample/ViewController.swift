@@ -8,7 +8,36 @@
 import UIKit
 import SceneKit
 import ARKit
-import MyFramework
+
+class ViewController2: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate, TrackerDelegate {
+    let camera = Camera()
+    let displayLayer: AVSampleBufferDisplayLayer = .init()
+    let tracker: Tracker = Tracker()!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.layer.addSublayer(displayLayer)
+        camera.setSampleBufferDelegate(self)
+        camera.start()
+        tracker.startGraph()
+        tracker.delegate = self
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        displayLayer.frame = view.bounds
+    }
+    
+    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        displayLayer.enqueue(sampleBuffer)
+        let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
+        tracker.processVideoFrame(pixelBuffer)
+    }
+    
+    func didReceived(_ landmarks: [Landmark]!) {
+        print(landmarks)
+    }
+}
 
 class ViewController: UIViewController, ARSessionDelegate, TrackerDelegate {
 
@@ -46,3 +75,29 @@ class ViewController: UIViewController, ARSessionDelegate, TrackerDelegate {
     }
 }
 
+
+class Camera: NSObject {
+    lazy var session: AVCaptureSession = .init()
+    lazy var input: AVCaptureDeviceInput = try! AVCaptureDeviceInput(device: device)
+    lazy var device: AVCaptureDevice = AVCaptureDevice.default(.builtInWideAngleCamera, for: .video, position: .front)!
+    lazy var output: AVCaptureVideoDataOutput = .init()
+    
+    override init() {
+        super.init()
+        output.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String : kCVPixelFormatType_32BGRA]
+        session.addInput(input)
+        session.addOutput(output)
+    }
+    
+    func setSampleBufferDelegate(_ delegate: AVCaptureVideoDataOutputSampleBufferDelegate) {
+        output.setSampleBufferDelegate(delegate, queue: .main)
+    }
+    
+    func start() {
+        session.startRunning()
+    }
+    
+    func stop() {
+        session.stopRunning()
+    }
+}

@@ -1,10 +1,12 @@
-load("@build_bazel_rules_apple//apple:ios.bzl", "ios_static_framework")
+load("@build_bazel_rules_apple//apple:ios.bzl", "ios_framework")
 
-ios_static_framework(
+ios_framework(
     name = "MyFramework",
     hdrs = [
         "ObjcClass.h",
     ],
+    infoplists = ["Info.plist"],
+    bundle_id = "com.noppelab.MyFramework",
     families = ["iphone", "ipad"],
     minimum_os_version = "10.0",
     deps = [
@@ -45,7 +47,6 @@ objc_library(
         "//mediapipe/graphs/hand_tracking:hand_tracking_mobile_gpu_binary_graph",
         "//mediapipe/models:palm_detection.tflite",
         "//mediapipe/models:palm_detection_labelmap.txt",
-	    "Info.plist",
     ],
     sdk_frameworks = [
         "AVFoundation",
