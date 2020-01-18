@@ -12,6 +12,7 @@ build --copt='-Wno-comment'
 build --copt='-Wno-return-type'
 build --copt='-Wno-unused-local-typedefs'
 build --copt='-Wno-ignored-attributes'
+build --copt='-fembed-bitcode'
 # Temporarily set the incompatibility flag for Bazel 0.27.0 and above
 build --incompatible_disable_deprecated_attr_params=false
 build --incompatible_depset_is_not_iterable=false
@@ -41,6 +42,7 @@ build:android_arm64 --fat_apk_cpu=arm64-v8a
 
 # iOS configs.
 build:ios --apple_platform_type=ios
+build:ios --apple_bitcode=embedded --copt=-fembed-bitcode
 
 build:ios_i386 --config=ios
 build:ios_i386 --cpu=ios_i386
