@@ -1,4 +1,4 @@
-#import "Mediapipe.h"
+#import "HandTracker.h"
 #import "mediapipe/objc/MPPGraph.h"
 #import "mediapipe/objc/MPPCameraInputSource.h"
 #import "mediapipe/objc/MPPLayerRenderer.h"

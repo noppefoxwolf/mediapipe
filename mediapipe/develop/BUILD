@@ -1,12 +1,12 @@
 load("@build_bazel_rules_apple//apple:ios.bzl", "ios_framework")
 
 ios_framework(
-    name = "Mediapipe",
+    name = "HandTracker",
     hdrs = [
-        "Mediapipe.h",
+        "HandTracker.h",
     ],
     infoplists = ["Info.plist"],
-    bundle_id = "com.noppelab.Mediapipe",
+    bundle_id = "com.noppelab.HandTracker",
     families = ["iphone", "ipad"],
     minimum_os_version = "10.0",
     deps = [
@@ -37,10 +37,10 @@ genrule(
 objc_library(
     name = "HandTrackingGpuAppLibrary",
     srcs = [
-        "Mediapipe.mm",
+        "HandTracker.mm",
     ],
     hdrs = [
-        "Mediapipe.h",
+        "HandTracker.h",
     ],
     data = [
         ":model",
