@@ -74,6 +74,15 @@ public class ExternalTextureConverter implements TextureFrameProducer {
     thread.setFlipY(flip);
   }
 
+  /**
+   * Sets an offset that can be used to adjust the timestamps on the camera frames, for example to
+   * conform to a preferred time-base or to account for a known device latency. The offset is added
+   * to each frame timetamp read by the ExternalTextureConverter.
+   */
+  public void setTimestampOffsetNanos(long offsetInNanos) {
+    thread.setTimestampOffsetNanos(offsetInNanos);
+  }
+
   public ExternalTextureConverter(EGLContext parentContext) {
     this(parentContext, DEFAULT_NUM_BUFFERS);
   }
@@ -148,7 +157,8 @@ public class ExternalTextureConverter implements TextureFrameProducer {
     private List<AppTextureFrame> outputFrames = null;
     private int outputFrameIndex = -1;
     private ExternalTextureRenderer renderer = null;
-    private long timestampOffset = 0;
+    private long nextFrameTimestampOffset = 0;
+    private long timestampOffsetNanos = 0;
     private long previousTimestamp = 0;
     private boolean previousTimestampValid = false;
 
@@ -227,6 +237,10 @@ public class ExternalTextureConverter implements TextureFrameProducer {
       }
       renderer.release();
       super.releaseGl(); // This releases the EGL context, so must do it after any GL calls.
+    }
+
+    public void setTimestampOffsetNanos(long offsetInNanos) {
+      timestampOffsetNanos = offsetInNanos;
     }
 
     protected void renderNext(SurfaceTexture fromTexture) {
@@ -332,21 +346,16 @@ public class ExternalTextureConverter implements TextureFrameProducer {
       bindFramebuffer(outputFrame.getTextureName(), destinationWidth, destinationHeight);
       renderer.render(surfaceTexture);
 
-      // Populate frame timestamp with the System.nanoTime() timestamp after render() as renderer
-      // ensures that surface texture has the up-to-date timestamp. (Also adjust |timestampOffset|
-      // to ensure that timestamps increase monotonically.)
-      // We assume that the camera timestamp is generated at the same time as this method is called
-      // and get the time via System.nanoTime(). This timestamp is aligned with the clock used by
-      // the microphone which returns timestamps aligned to the same time base as System.nanoTime().
-      // Data sent from camera and microphone should have timestamps aligned on the same clock and
-      // timebase so that the data can be processed by a MediaPipe graph simultaneously.
-      // Android's SurfaceTexture.getTimestamp() method is not aligned to the System.nanoTime()
-      // clock, so it cannot be used for texture timestamps in this method.
-      long textureTimestamp = System.nanoTime() / NANOS_PER_MICRO;
-      if (previousTimestampValid && textureTimestamp + timestampOffset <= previousTimestamp) {
-        timestampOffset = previousTimestamp + 1 - textureTimestamp;
+      // Populate frame timestamp with surface texture timestamp after render() as renderer
+      // ensures that surface texture has the up-to-date timestamp. (Also adjust
+      // |nextFrameTimestampOffset| to ensure that timestamps increase monotonically.)
+      long textureTimestamp =
+          (surfaceTexture.getTimestamp() + timestampOffsetNanos) / NANOS_PER_MICRO;
+      if (previousTimestampValid
+          && textureTimestamp + nextFrameTimestampOffset <= previousTimestamp) {
+        nextFrameTimestampOffset = previousTimestamp + 1 - textureTimestamp;
       }
-      outputFrame.setTimestamp(textureTimestamp + timestampOffset);
+      outputFrame.setTimestamp(textureTimestamp + nextFrameTimestampOffset);
       previousTimestamp = outputFrame.getTimestamp();
       previousTimestampValid = true;
     }

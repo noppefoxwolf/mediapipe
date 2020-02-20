@@ -19,7 +19,8 @@ see
 [step 4 of "Installing on Debian and Ubuntu" in the installation guide](./install.md).
 
 Note: If MediaPipe depends on OpenCV 2, please see the
-[known issues with OpenCV 2](#known-issues-with-opencv-2) section.
+[known issues with OpenCV 2](./object_detection_desktop.md#known-issues-with-opencv-2)
+section.
 
 ### TensorFlow Lite Multi-Hand Tracking Demo with Webcam (CPU)
 
@@ -60,6 +61,9 @@ $ bazel build -c opt --copt -DMESA_EGL_NO_X11_HEADERS \
 $ GLOG_logtostderr=1 bazel-bin/mediapipe/examples/desktop/multi_hand_tracking/multi_hand_tracking_gpu \
     --calculator_graph_config_file=mediapipe/graphs/hand_tracking/multi_hand_tracking_mobile.pbtxt
 ```
+
+Issues running? Please first
+[check that your GPU is supported](./gpu.md#desktop-gpu-linux)
 
 #### Graph
 
