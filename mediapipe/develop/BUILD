@@ -10,7 +10,7 @@ ios_framework(
     families = ["iphone", "ipad"],
     minimum_os_version = "10.0",
     deps = [
-        ":HandTrackingGpuAppLibrary",
+        ":HandTrackerLibrary",
         "@ios_opencv//:OpencvFramework",
     ],
 )
@@ -35,7 +35,7 @@ genrule(
 )
 
 objc_library(
-    name = "HandTrackingGpuAppLibrary",
+    name = "HandTrackerLibrary",
     srcs = [
         "HandTracker.mm",
     ],
