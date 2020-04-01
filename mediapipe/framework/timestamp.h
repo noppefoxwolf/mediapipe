@@ -100,7 +100,6 @@ class Timestamp {
   }
 
   // Special values.
-
   static Timestamp Unset();
   static Timestamp Unstarted();
   static Timestamp PreStream();
@@ -247,6 +246,12 @@ class TimestampDiff {
   TimestampDiff operator+(const TimestampDiff other) const;
   TimestampDiff operator-(const TimestampDiff other) const;
   Timestamp operator+(const Timestamp other) const;
+
+  // Special values.
+
+  static TimestampDiff Unset() {
+    return TimestampDiff(Timestamp::Unset().Value());
+  }
 
  private:
   TimestampBaseType timestamp_;

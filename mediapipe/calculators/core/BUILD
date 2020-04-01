@@ -228,6 +228,7 @@ cc_library(
         "//mediapipe/framework:calculator_framework",
         "//mediapipe/framework:collection_item_id",
         "//mediapipe/framework:packet",
+        "//mediapipe/framework/formats:detection_cc_proto",
         "//mediapipe/framework/formats:landmark_cc_proto",
         "//mediapipe/framework/formats:rect_cc_proto",
         "//mediapipe/framework/port:integral_types",
@@ -249,6 +250,7 @@ cc_library(
         "//mediapipe/framework:calculator_framework",
         "//mediapipe/framework:collection_item_id",
         "//mediapipe/framework:packet",
+        "//mediapipe/framework/formats:classification_cc_proto",
         "//mediapipe/framework/formats:landmark_cc_proto",
         "//mediapipe/framework/formats:rect_cc_proto",
         "//mediapipe/framework/port:integral_types",
@@ -265,10 +267,11 @@ cc_test(
     deps = [
         ":begin_loop_calculator",
         ":end_loop_calculator",
-        "//mediapipe/calculators/core:packet_cloner_calculator",
+        ":gate_calculator",
         "//mediapipe/framework:calculator_context",
         "//mediapipe/framework:calculator_contract",
         "//mediapipe/framework:calculator_framework",
+        "//mediapipe/framework:packet",
         "//mediapipe/framework/port:gtest_main",
         "//mediapipe/framework/port:integral_types",
         "//mediapipe/framework/port:parse_text_proto",
@@ -334,6 +337,7 @@ cc_library(
     deps = [
         ":clip_vector_size_calculator_cc_proto",
         "//mediapipe/framework:calculator_framework",
+        "//mediapipe/framework/formats:detection_cc_proto",
         "//mediapipe/framework/formats:rect_cc_proto",
         "//mediapipe/framework/port:ret_check",
         "//mediapipe/framework/port:status",
@@ -611,6 +615,22 @@ cc_library(
 )
 
 cc_test(
+    name = "side_packet_to_stream_calculator_test",
+    srcs = ["side_packet_to_stream_calculator_test.cc"],
+    deps = [
+        ":side_packet_to_stream_calculator",
+        "//mediapipe/framework:calculator_framework",
+        "//mediapipe/framework/port:gtest_main",
+        "//mediapipe/framework/port:integral_types",
+        "//mediapipe/framework/port:parse_text_proto",
+        "//mediapipe/framework/port:status",
+        "//mediapipe/framework/tool:options_util",
+        "@com_google_absl//absl/memory",
+        "@com_google_absl//absl/strings",
+    ],
+)
+
+cc_test(
     name = "immediate_mux_calculator_test",
     srcs = ["immediate_mux_calculator_test.cc"],
     deps = [
@@ -677,15 +697,17 @@ cc_test(
     name = "previous_loopback_calculator_test",
     srcs = ["previous_loopback_calculator_test.cc"],
     deps = [
+        ":gate_calculator",
+        ":make_pair_calculator",
+        ":pass_through_calculator",
         ":previous_loopback_calculator",
-        "//mediapipe/calculators/core:make_pair_calculator",
-        "//mediapipe/calculators/core:pass_through_calculator",
         "//mediapipe/framework:calculator_framework",
         "//mediapipe/framework:calculator_runner",
         "//mediapipe/framework:timestamp",
         "//mediapipe/framework/port:gtest_main",
         "//mediapipe/framework/port:integral_types",
         "//mediapipe/framework/port:parse_text_proto",
+        "//mediapipe/framework/port:status",
         "//mediapipe/framework/stream_handler:immediate_input_stream_handler",
         "//mediapipe/framework/tool:sink",
         "@com_google_absl//absl/time",
@@ -753,6 +775,7 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         ":split_vector_calculator_cc_proto",
+        "//mediapipe/framework/formats:detection_cc_proto",
         "//mediapipe/framework:calculator_framework",
         "//mediapipe/framework/formats:landmark_cc_proto",
         "//mediapipe/framework/formats:rect_cc_proto",

@@ -138,7 +138,7 @@ cc_library(
     srcs = ["flow_to_image_calculator.cc"],
     visibility = ["//visibility:public"],
     deps = [
-        "//mediapipe/calculators/video:flow_to_image_calculator_cc_proto",
+        ":flow_to_image_calculator_cc_proto",
         "//mediapipe/calculators/video/tool:flow_quantizer_model",
         "//mediapipe/framework:calculator_framework",
         "//mediapipe/framework/formats:image_format_cc_proto",
@@ -368,6 +368,7 @@ cc_test(
 cc_test(
     name = "tvl1_optical_flow_calculator_test",
     srcs = ["tvl1_optical_flow_calculator_test.cc"],
+    linkstatic = 1,
     deps = [
         ":tvl1_optical_flow_calculator",
         "//mediapipe/framework:calculator_framework",
@@ -383,20 +384,18 @@ cc_test(
     ],
 )
 
-MEDIAPIPE_DEPS = [
-    "//mediapipe/calculators/video:box_tracker_calculator",
-    "//mediapipe/calculators/video:flow_packager_calculator",
-    "//mediapipe/calculators/video:motion_analysis_calculator",
-    "//mediapipe/framework/stream_handler:fixed_size_input_stream_handler",
-    "//mediapipe/framework/stream_handler:sync_set_input_stream_handler",
-]
-
 mediapipe_binary_graph(
     name = "parallel_tracker_binarypb",
     graph = "testdata/parallel_tracker_graph.pbtxt",
     output_name = "testdata/parallel_tracker.binarypb",
     visibility = ["//visibility:public"],
-    deps = MEDIAPIPE_DEPS,
+    deps = [
+        ":box_tracker_calculator",
+        ":flow_packager_calculator",
+        ":motion_analysis_calculator",
+        "//mediapipe/framework/stream_handler:fixed_size_input_stream_handler",
+        "//mediapipe/framework/stream_handler:sync_set_input_stream_handler",
+    ],
 )
 
 mediapipe_binary_graph(
@@ -404,7 +403,13 @@ mediapipe_binary_graph(
     graph = "testdata/tracker_graph.pbtxt",
     output_name = "testdata/tracker.binarypb",
     visibility = ["//visibility:public"],
-    deps = MEDIAPIPE_DEPS,
+    deps = [
+        ":box_tracker_calculator",
+        ":flow_packager_calculator",
+        ":motion_analysis_calculator",
+        "//mediapipe/framework/stream_handler:fixed_size_input_stream_handler",
+        "//mediapipe/framework/stream_handler:sync_set_input_stream_handler",
+    ],
 )
 
 cc_test(

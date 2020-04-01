@@ -40,7 +40,7 @@ To build and run iOS apps:
     $ cd mediapipe
     ```
 
-2.  Install Bazel (version between 0.24.1 and 1.2.1).
+2.  Install Bazel (version between 1.0.0 and 1.2.1).
 
     Follow the official
     [Bazel documentation](https://docs.bazel.build/versions/master/install-ubuntu.html)
@@ -152,7 +152,7 @@ To build and run iOS apps:
     $ cd mediapipe
     ```
 
-2.  Install Bazel (version between 0.24.1 and 1.2.1).
+2.  Install Bazel (version between 1.0.0 and 1.2.1).
 
     Follow the official
     [Bazel documentation](https://docs.bazel.build/versions/master/install-redhat.html)
@@ -241,7 +241,7 @@ To build and run iOS apps:
     $ cd mediapipe
     ```
 
-3.  Install Bazel (version between 0.24.1 and 1.1.0).
+3.  Install Bazel (version between 1.0.0 and 1.1.0).
 
     Option 1. Use package manager tool to install Bazel 1.1.0
 
@@ -364,8 +364,10 @@ To build and run iOS apps:
 
 ### Installing on Windows Subsystem for Linux (WSL)
 
-Note: WSL has historically not provided access to USB cameras. Mediapipe can use
-a video file as input.
+Note: The pre-built OpenCV packages don't support cameras in WSL. Unless you
+[compile](https://funvision.blogspot.com/2019/12/opencv-web-camera-and-video-streams-in.html)
+OpenCV with FFMPEG and GStreamer in WSL, the live demos won't work with any
+cameras. Alternatively, you use a video file as input.
 
 1.  Follow the
     [instruction](https://docs.microsoft.com/en-us/windows/wsl/install-win10) to
@@ -373,7 +375,7 @@ a video file as input.
 
 2.  Install Windows ADB and start the ADB server in Windows.
 
-    Note: Window’s and WSL’s adb versions must be the same version, e.g., if WSL
+    Note: Windows' and WSL’s adb versions must be the same version, e.g., if WSL
     has ADB 1.0.39, you need to download the corresponding Windows ADB from
     [here](https://dl.google.com/android/repository/platform-tools_r26.0.1-windows.zip).
 
@@ -389,18 +391,18 @@ a video file as input.
     username@DESKTOP-TMVLBJ1:~$ sudo apt-get update && sudo apt-get install -y build-essential git python zip adb openjdk-8-jdk
     ```
 
-5.  Install Bazel (version between 0.24.1 and 1.2.1).
+5.  Install Bazel (version between 1.0.0 and 1.2.1).
 
     ```bash
     username@DESKTOP-TMVLBJ1:~$ curl -sLO --retry 5 --retry-max-time 10 \
-    https://storage.googleapis.com/bazel/0.27.0/release/bazel-0.27.0-installer-linux-x86_64.sh && \
-    sudo mkdir -p /usr/local/bazel/0.27.0 && \
-    chmod 755 bazel-0.27.0-installer-linux-x86_64.sh && \
-    sudo ./bazel-0.27.0-installer-linux-x86_64.sh --prefix=/usr/local/bazel/0.27.0 && \
-    source /usr/local/bazel/0.27.0/lib/bazel/bin/bazel-complete.bash
+    https://storage.googleapis.com/bazel/1.0.0/release/bazel-1.0.0-installer-linux-x86_64.sh && \
+    sudo mkdir -p /usr/local/bazel/1.0.0 && \
+    chmod 755 bazel-1.0.0-installer-linux-x86_64.sh && \
+    sudo ./bazel-1.0.0-installer-linux-x86_64.sh --prefix=/usr/local/bazel/1.0.0 && \
+    source /usr/local/bazel/1.0.0/lib/bazel/bin/bazel-complete.bash
 
-    username@DESKTOP-TMVLBJ1:~$ /usr/local/bazel/0.27.0/lib/bazel/bin/bazel version && \
-    alias bazel='/usr/local/bazel/0.27.0/lib/bazel/bin/bazel'
+    username@DESKTOP-TMVLBJ1:~$ /usr/local/bazel/1.0.0/lib/bazel/bin/bazel version && \
+    alias bazel='/usr/local/bazel/1.0.0/lib/bazel/bin/bazel'
     ```
 
 6.  Checkout MediaPipe repository.

@@ -22,13 +22,12 @@ cc_library(
     hdrs = ["media_sequence_util.h"],
     visibility = [
         "//mediapipe:__subpackages__",
-        "//research/action_recognition/sequence:__subpackages__",
     ],
     deps = [
         "//mediapipe/framework/port:core_proto",
         "//mediapipe/framework/port:integral_types",
         "//mediapipe/framework/port:logging",
-        "@org_tensorflow//tensorflow/core:protos_all",
+        "@org_tensorflow//tensorflow/core:protos_all_cc",
     ],
 )
 
@@ -38,7 +37,6 @@ cc_library(
     hdrs = ["media_sequence.h"],
     visibility = [
         "//mediapipe:__subpackages__",
-        "//research/action_recognition/sequence:__subpackages__",
     ],
     deps = [
         ":media_sequence_util",
@@ -50,7 +48,7 @@ cc_library(
         "//mediapipe/framework/port:status",
         "@com_google_absl//absl/memory",
         "@com_google_absl//absl/strings",
-        "@org_tensorflow//tensorflow/core:protos_all",
+        "@org_tensorflow//tensorflow/core:protos_all_cc",
     ],
 )
 
@@ -61,7 +59,7 @@ cc_test(
         ":media_sequence_util",
         "//mediapipe/framework/port:gtest_main",
         "//mediapipe/framework/port:parse_text_proto",
-        "@org_tensorflow//tensorflow/core:protos_all",
+        "@org_tensorflow//tensorflow/core:protos_all_cc",
     ],
 )
 
@@ -74,6 +72,6 @@ cc_test(
         "//mediapipe/framework/port:gtest_main",
         "//mediapipe/framework/port:opencv_imgcodecs",
         "//mediapipe/framework/port:status",
-        "@org_tensorflow//tensorflow/core:protos_all",
+        "@org_tensorflow//tensorflow/core:protos_all_cc",
     ],
 )

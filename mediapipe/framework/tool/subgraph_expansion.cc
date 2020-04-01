@@ -76,10 +76,11 @@ namespace tool {
 ::mediapipe::Status RemoveIgnoredStreams(
     proto_ns::RepeatedPtrField<ProtoString>* streams,
     const std::set<std::string>& missing_streams) {
-  ASSIGN_OR_RETURN(auto src_map, tool::TagMap::Create(*streams));
-  std::vector<std::string> src_names = src_map->Names();
   for (int i = streams->size() - 1; i >= 0; --i) {
-    if (missing_streams.count(src_names[i]) > 0) {
+    std::string tag, name;
+    int index;
+    MP_RETURN_IF_ERROR(ParseTagIndexName(streams->Get(i), &tag, &index, &name));
+    if (missing_streams.count(name) > 0) {
       streams->DeleteSubrange(i, 1);
     }
   }
@@ -263,6 +264,10 @@ static ::mediapipe::Status PrefixNames(std::string prefix,
         generator.mutable_input_side_packet(), replace_names));
     MP_RETURN_IF_ERROR(TransformStreamNames(
         generator.mutable_output_side_packet(), replace_names));
+
+    // Remove input side packets ignored by the subgraph-node.
+    MP_RETURN_IF_ERROR(RemoveIgnoredStreams(
+        generator.mutable_input_side_packet(), ignored_input_side_packets));
   }
   return ::mediapipe::OkStatus();
 }
