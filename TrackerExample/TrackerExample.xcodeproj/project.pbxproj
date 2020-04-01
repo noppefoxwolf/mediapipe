@@ -15,8 +15,8 @@
 		373B5F4223D367420065C67C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 373B5F4023D367420065C67C /* LaunchScreen.storyboard */; };
 		373B5F4A23D368660065C67C /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 373B5F4923D368660065C67C /* Extensions.swift */; };
 		373B5F5123D36A170065C67C /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 373B5F5023D369280065C67C /* libc++.tbd */; };
-		373B5F6423D380D10065C67C /* MyFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 373B5F4C23D368A70065C67C /* MyFramework.framework */; };
-		373B5F6523D380D10065C67C /* MyFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 373B5F4C23D368A70065C67C /* MyFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		377E25A52435039D0079B203 /* HandTracker.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 377E25A42435039C0079B203 /* HandTracker.framework */; };
+		377E25A62435039D0079B203 /* HandTracker.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 377E25A42435039C0079B203 /* HandTracker.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -26,7 +26,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				373B5F6523D380D10065C67C /* MyFramework.framework in Embed Frameworks */,
+				377E25A62435039D0079B203 /* HandTracker.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -43,9 +43,9 @@
 		373B5F4123D367420065C67C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		373B5F4323D367420065C67C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		373B5F4923D368660065C67C /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
-		373B5F4C23D368A70065C67C /* MyFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MyFramework.framework; path = "../../../../../../../../var/tmp/_bazel_noppe/11faeb8ce054d9f5a5df6953790617cd/execroot/mediapipe/bazel-out/ios_arm64-fastbuild/bin/mediapipe/develop/MyFramework.framework"; sourceTree = "<group>"; };
 		373B5F5023D369280065C67C /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		373B5F6723D381C30065C67C /* TrackerExample-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TrackerExample-Bridging-Header.h"; sourceTree = "<group>"; };
+		377E25A42435039C0079B203 /* HandTracker.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HandTracker.framework; path = "../../../../../../../../var/tmp/_bazel_noppe/e0fcfd45d9b0ac51e30a92562367722e/execroot/mediapipe/bazel-out/darwin-fastbuild/bin/mediapipe/develop/HandTracker.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,8 +53,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				377E25A52435039D0079B203 /* HandTracker.framework in Frameworks */,
 				373B5F5123D36A170065C67C /* libc++.tbd in Frameworks */,
-				373B5F6423D380D10065C67C /* MyFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,8 +97,8 @@
 		373B5F4B23D368A70065C67C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				377E25A42435039C0079B203 /* HandTracker.framework */,
 				373B5F5023D369280065C67C /* libc++.tbd */,
-				373B5F4C23D368A70065C67C /* MyFramework.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

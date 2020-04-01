@@ -12,7 +12,7 @@ import ARKit
 class ViewController2: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate, TrackerDelegate {
     let camera = Camera()
     let displayLayer: AVSampleBufferDisplayLayer = .init()
-    let tracker: Tracker = Tracker()!
+    let tracker: HandTracker = HandTracker()!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,15 +34,19 @@ class ViewController2: UIViewController, AVCaptureVideoDataOutputSampleBufferDel
         tracker.processVideoFrame(pixelBuffer)
     }
     
-    func didReceived(_ landmarks: [Landmark]!) {
+    func handTracker(_ handTracker: HandTracker!, didOutputLandmarks landmarks: [Landmark]!) {
         print(landmarks)
+    }
+    
+    func handTracker(_ handTracker: HandTracker!, didOutputPixelBuffer pixelBuffer: CVPixelBuffer!) {
+        
     }
 }
 
 class ViewController: UIViewController, ARSessionDelegate, TrackerDelegate {
 
     @IBOutlet var sceneView: ARSCNView!
-    let tracker: Tracker = Tracker()!
+    let tracker: HandTracker = HandTracker()!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,8 +74,12 @@ class ViewController: UIViewController, ARSessionDelegate, TrackerDelegate {
         tracker.processVideoFrame(bgra)
     }
     
-    func didReceived(_ landmarks: [Landmark]!) {
-        print(landmarks)
+    func handTracker(_ handTracker: HandTracker!, didOutputLandmarks landmarks: [Landmark]!) {
+        
+    }
+    
+    func handTracker(_ handTracker: HandTracker!, didOutputPixelBuffer pixelBuffer: CVPixelBuffer!) {
+        
     }
 }
 
