@@ -327,6 +327,8 @@ namespace packet_internal {
 
 template <typename T>
 class Holder;
+template <typename T>
+class ForeignHolder;
 
 class HolderBase {
  public:
@@ -353,10 +355,112 @@ class HolderBase {
   // Downcasts this to Holder<T>.  Returns nullptr if deserialization
   // failed or if the requested type is not what is stored.
   template <typename T>
-  Holder<T>* As();
+  inline Holder<T>* As(
+      typename std::enable_if<
+          (!std::is_base_of<proto_ns::MessageLite, T>::value &&
+           !std::is_base_of<proto_ns::Message, T>::value) ||
+          (std::is_same<proto_ns::MessageLite, T>::value ||
+           std::is_same<proto_ns::Message, T>::value)>::type* = 0) {
+    if (HolderIsOfType<Holder<T>>() || HolderIsOfType<ForeignHolder<T>>()) {
+      return static_cast<Holder<T>*>(this);
+    }
+    // Does not hold a T.
+    return nullptr;
+  }
+
+  // For proto Message/MessageLite subclasses.
+  // When holder data is a concrete proto, the method downcasts this to
+  // Holder<T> if the requested type is what is stored.
+  // When holder data is a generic proto Message/MessageLite and a concrete
+  // proto type T is requested, the method will downcast the HolderBase to
+  // Holder<T> if the proto data is an instance of T.
+  template <typename T>
+  inline Holder<T>* As(
+      typename std::enable_if<
+          (std::is_base_of<proto_ns::MessageLite, T>::value ||
+           std::is_base_of<proto_ns::Message, T>::value) &&
+          (!std::is_same<proto_ns::MessageLite, T>::value &&
+           !std::is_same<proto_ns::Message, T>::value)>::type* = 0) {
+    // Holder data is an instance of subclass type T.
+    if (HolderIsOfType<Holder<T>>() || HolderIsOfType<ForeignHolder<T>>()) {
+      return static_cast<Holder<T>*>(this);
+    }
+
+    // Holder data is a generic proto Message/MessageLite and a subclass type T
+    // is requested.
+    if (HolderIsOfType<Holder<proto_ns::Message>>() ||
+        HolderIsOfType<ForeignHolder<proto_ns::Message>>() ||
+        HolderIsOfType<Holder<proto_ns::MessageLite>>() ||
+        HolderIsOfType<ForeignHolder<proto_ns::MessageLite>>()) {
+      // TODO: Holder<proto_ns::Message/MessageLite> cannot be
+      // legally downcast to Holder<T>, even though that downcast works in
+      // practice. Need to propose a better way to do the downcast.
+      Holder<T>* holder = static_cast<Holder<T>*>(this);
+      T tmp;
+      VLOG(2) << "Holder proto data type: " << holder->data().GetTypeName()
+              << " vs requested proto type: " << tmp.GetTypeName();
+      if (tmp.GetTypeName() == holder->data().GetTypeName()) {
+        return holder;
+      }
+    }
+
+    // Does not hold a T.
+    return nullptr;
+  }
+
   // Same as non-const As() function.
   template <typename T>
-  const Holder<T>* As() const;
+  inline const Holder<T>* As(
+      typename std::enable_if<
+          (!std::is_base_of<proto_ns::MessageLite, T>::value &&
+           !std::is_base_of<proto_ns::Message, T>::value) ||
+          (std::is_same<proto_ns::MessageLite, T>::value ||
+           std::is_same<proto_ns::Message, T>::value)>::type* = 0) const {
+    if (HolderIsOfType<Holder<T>>() || HolderIsOfType<ForeignHolder<T>>()) {
+      return static_cast<const Holder<T>*>(this);
+    }
+    // Does not hold a T.
+    return nullptr;
+  }
+
+  // For proto Message/MessageLite subclasses.
+  // When holder data is a concrete proto, the method downcasts this to
+  // Holder<T> if the requested type is what is stored.
+  // When holder data is a generic proto Message/MessageLite and a concrete
+  // proto type T is requested, the method will downcast the HolderBase to
+  // Holder<T> if the proto data is an instance of T.
+  template <typename T>
+  inline const Holder<T>* As(
+      typename std::enable_if<
+          (std::is_base_of<proto_ns::MessageLite, T>::value ||
+           std::is_base_of<proto_ns::Message, T>::value) &&
+          (!std::is_same<proto_ns::MessageLite, T>::value &&
+           !std::is_same<proto_ns::Message, T>::value)>::type* = 0) const {
+    if (HolderIsOfType<Holder<T>>() || HolderIsOfType<ForeignHolder<T>>()) {
+      return static_cast<const Holder<T>*>(this);
+    }
+
+    // Holder data is a generic proto Message/MessageLite and a subclass type T
+    // is requested.
+    if (HolderIsOfType<Holder<proto_ns::Message>>() ||
+        HolderIsOfType<ForeignHolder<proto_ns::Message>>() ||
+        HolderIsOfType<Holder<proto_ns::MessageLite>>() ||
+        HolderIsOfType<ForeignHolder<proto_ns::MessageLite>>()) {
+      // TODO: Holder<proto_ns::Message/MessageLite> cannot be
+      // legally downcast to Holder<T>, even though that downcast works in
+      // practice. Need to propose a better way to do the downcast.
+      Holder<T>* holder = static_cast<const Holder<T>*>(this);
+      T tmp;
+      VLOG(2) << "Holder proto data type: " << holder->data().GetTypeName()
+              << " vs requested proto type: " << tmp.GetTypeName();
+      if (tmp.GetTypeName() == holder->data().GetTypeName()) {
+        return holder;
+      }
+    }
+
+    // Does not hold a T.
+    return nullptr;
+  }
 
   // Returns the pointer to MessageLite type for the data in holder, if
   // underlying object is protocol buffer type, otherwise, nullptr is returned.
@@ -518,33 +622,15 @@ class ForeignHolder : public Holder<T> {
   }
 };
 
-template <typename T>
-Holder<T>* HolderBase::As() {
-  if (HolderIsOfType<Holder<T>>() || HolderIsOfType<ForeignHolder<T>>()) {
-    return static_cast<Holder<T>*>(this);
-  }
-  // Does not hold a T.
-  return nullptr;
-}
-
-template <typename T>
-const Holder<T>* HolderBase::As() const {
-  if (HolderIsOfType<Holder<T>>() || HolderIsOfType<ForeignHolder<T>>()) {
-    return static_cast<const Holder<T>*>(this);
-  }
-  // Does not hold a T.
-  return nullptr;
-}
-
 }  // namespace packet_internal
 
 inline Packet::Packet(const Packet& packet)
     : holder_(packet.holder_), timestamp_(packet.timestamp_) {
-  VLOG(2) << "Using copy constructor of " << packet.DebugString();
+  VLOG(4) << "Using copy constructor of " << packet.DebugString();
 }
 
 inline Packet& Packet::operator=(const Packet& packet) {
-  VLOG(2) << "Using copy assignment operator of " << packet.DebugString();
+  VLOG(4) << "Using copy assignment operator of " << packet.DebugString();
   if (this != &packet) {
     holder_ = packet.holder_;
     timestamp_ = packet.timestamp_;
@@ -559,11 +645,11 @@ inline ::mediapipe::StatusOr<std::unique_ptr<T>> Packet::Consume() {
   // Clients who use this function are responsible for ensuring that no
   // other thread is doing anything with this Packet.
   if (holder_.unique()) {
-    VLOG(1) << "Consuming the data of " << DebugString();
+    VLOG(2) << "Consuming the data of " << DebugString();
     ::mediapipe::StatusOr<std::unique_ptr<T>> release_result =
         holder_->As<T>()->Release();
     if (release_result.ok()) {
-      VLOG(1) << "Setting " << DebugString() << " to empty.";
+      VLOG(2) << "Setting " << DebugString() << " to empty.";
       holder_.reset();
     }
     return release_result;
@@ -582,11 +668,11 @@ inline ::mediapipe::StatusOr<std::unique_ptr<T>> Packet::ConsumeOrCopy(
   // If holder is the sole owner of the underlying data, consumes this packet.
   if (!holder_->HolderIsOfType<packet_internal::ForeignHolder<T>>() &&
       holder_.unique()) {
-    VLOG(1) << "Consuming the data of " << DebugString();
+    VLOG(2) << "Consuming the data of " << DebugString();
     ::mediapipe::StatusOr<std::unique_ptr<T>> release_result =
         holder_->As<T>()->Release();
     if (release_result.ok()) {
-      VLOG(1) << "Setting " << DebugString() << " to empty.";
+      VLOG(2) << "Setting " << DebugString() << " to empty.";
       holder_.reset();
     }
     if (was_copied) {
@@ -594,9 +680,9 @@ inline ::mediapipe::StatusOr<std::unique_ptr<T>> Packet::ConsumeOrCopy(
     }
     return release_result;
   }
-  VLOG(1) << "Copying the data of " << DebugString();
+  VLOG(2) << "Copying the data of " << DebugString();
   std::unique_ptr<T> data_ptr = absl::make_unique<T>(Get<T>());
-  VLOG(1) << "Setting " << DebugString() << " to empty.";
+  VLOG(2) << "Setting " << DebugString() << " to empty.";
   holder_.reset();
   if (was_copied) {
     *was_copied = true;
@@ -613,11 +699,11 @@ inline ::mediapipe::StatusOr<std::unique_ptr<T>> Packet::ConsumeOrCopy(
   // If holder is the sole owner of the underlying data, consumes this packet.
   if (!holder_->HolderIsOfType<packet_internal::ForeignHolder<T>>() &&
       holder_.unique()) {
-    VLOG(1) << "Consuming the data of " << DebugString();
+    VLOG(2) << "Consuming the data of " << DebugString();
     ::mediapipe::StatusOr<std::unique_ptr<T>> release_result =
         holder_->As<T>()->Release();
     if (release_result.ok()) {
-      VLOG(1) << "Setting " << DebugString() << " to empty.";
+      VLOG(2) << "Setting " << DebugString() << " to empty.";
       holder_.reset();
     }
     if (was_copied) {
@@ -625,7 +711,7 @@ inline ::mediapipe::StatusOr<std::unique_ptr<T>> Packet::ConsumeOrCopy(
     }
     return release_result;
   }
-  VLOG(1) << "Copying the data of " << DebugString();
+  VLOG(2) << "Copying the data of " << DebugString();
   const auto& original_array = Get<T>();
   // Type T is bounded array type, such as int[N] and float[M].
   // The new operator creates a new bounded array.
@@ -633,7 +719,7 @@ inline ::mediapipe::StatusOr<std::unique_ptr<T>> Packet::ConsumeOrCopy(
   // Copies bounded array data into data_ptr.
   std::copy(std::begin(original_array), std::end(original_array),
             std::begin(*data_ptr));
-  VLOG(1) << "Setting " << DebugString() << " to empty.";
+  VLOG(2) << "Setting " << DebugString() << " to empty.";
   holder_.reset();
   if (was_copied) {
     *was_copied = true;
@@ -650,14 +736,14 @@ inline ::mediapipe::StatusOr<std::unique_ptr<T>> Packet::ConsumeOrCopy(
 }
 
 inline Packet::Packet(Packet&& packet) {
-  VLOG(2) << "Using move constructor of " << packet.DebugString();
+  VLOG(4) << "Using move constructor of " << packet.DebugString();
   holder_ = std::move(packet.holder_);
   timestamp_ = packet.timestamp_;
   packet.timestamp_ = Timestamp::Unset();
 }
 
 inline Packet& Packet::operator=(Packet&& packet) {
-  VLOG(2) << "Using move assignment operator of " << packet.DebugString();
+  VLOG(4) << "Using move assignment operator of " << packet.DebugString();
   if (this != &packet) {
     holder_ = std::move(packet.holder_);
     timestamp_ = packet.timestamp_;

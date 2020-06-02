@@ -2,12 +2,12 @@
 
 ***Experimental Only***
 
-The MediaPipe Android archive library is a convenient way to use MediaPipe with
-Android Studio and Gradle. MediaPipe doesn't publish a general AAR that can be
-used by all projects. Instead, developers need to add a mediapipe_aar() target
-to generate a custom AAR file for their own projects. This is necessary in order
-to include specific resources such as MediaPipe calculators needed for each
-project.
+The MediaPipe Android Archive (AAR) library is a convenient way to use MediaPipe
+with Android Studio and Gradle. MediaPipe doesn't publish a general AAR that can
+be used by all projects. Instead, developers need to add a mediapipe_aar()
+target to generate a custom AAR file for their own projects. This is necessary
+in order to include specific resources such as MediaPipe calculators needed for
+each project.
 
 ### Steps to build a MediaPipe AAR
 
@@ -32,13 +32,14 @@ project.
 2.  Run the Bazel build command to generate the AAR.
 
     ```bash
-    bazel build -c opt --fat_apk_cpu=arm64-v8a,armeabi-v7a //path/to/the/aar/build/file:aar_name
+    bazel build -c opt --host_crosstool_top=@bazel_tools//tools/cpp:toolchain --fat_apk_cpu=arm64-v8a,armeabi-v7a \
+        //path/to/the/aar/build/file:aar_name
     ```
 
     For the face detection AAR target we made in the step 1, run:
 
     ```bash
-    bazel build -c opt --fat_apk_cpu=arm64-v8a,armeabi-v7a \
+    bazel build -c opt --host_crosstool_top=@bazel_tools//tools/cpp:toolchain --fat_apk_cpu=arm64-v8a,armeabi-v7a \
         //mediapipe/examples/android/src/java/com/google/mediapipe/apps/aar_example:mp_face_detection_aar
 
     # It should print:
@@ -117,7 +118,7 @@ project.
         implementation 'com.google.code.findbugs:jsr305:3.0.2'
         implementation 'com.google.guava:guava:27.0.1-android'
         implementation 'com.google.guava:guava:27.0.1-android'
-        implementation 'com.google.protobuf:protobuf-lite:3.0.0'
+        implementation 'com.google.protobuf:protobuf-java:3.11.4''
         // CameraX core library
         def camerax_version = "1.0.0-alpha06"
         implementation "androidx.camera:camera-core:$camerax_version"

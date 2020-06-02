@@ -4,6 +4,8 @@ This doc focuses on the
 [example graph](https://github.com/google/mediapipe/tree/master/mediapipe/graphs/face_detection/face_detection_mobile_cpu.pbtxt)
 that performs face detection with TensorFlow Lite on CPU.
 
+![face_detection_android_gpu_gif](images/mobile/face_detection_android_gpu.gif)
+
 ## Android
 
 [Source](https://github.com/google/mediapipe/tree/master/mediapipe/examples/android/src/java/com/google/mediapipe/apps/facedetectioncpu)
@@ -19,7 +21,7 @@ adb install bazel-bin/mediapipe/examples/android/src/java/com/google/mediapipe/a
 
 [Source](https://github.com/google/mediapipe/tree/master/mediapipe/examples/ios/facedetectioncpu).
 
-See the general [instructions](./mediapipe_ios_setup.md) for building iOS
+See the general [instructions](./building_examples.md#ios) for building iOS
 examples and generating an Xcode project. This will be the FaceDetectionCpuApp
 target.
 

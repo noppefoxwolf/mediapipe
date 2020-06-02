@@ -316,6 +316,10 @@ CVPixelBufferRef CreateCVPixelBufferForImageFramePacket(
       pixel_format = kCVPixelFormatType_OneComponent32Float;
       break;
 
+    case mediapipe::ImageFormat::VEC32F2:
+      pixel_format = kCVPixelFormatType_TwoComponent32Float;
+      break;
+
     default:
       return ::mediapipe::UnknownErrorBuilder(MEDIAPIPE_LOC)
              << "unsupported ImageFrame format: " << image_format;
@@ -517,17 +521,29 @@ CFDictionaryRef GetCVPixelBufferAttributesForGlCompatibility() {
     CFDictionaryRef empty_dict = CFDictionaryCreate(
         kCFAllocatorDefault, NULL, NULL, 0, &kCFTypeDictionaryKeyCallBacks,
         &kCFTypeDictionaryValueCallBacks);
+
     // To ensure compatibility with CVOpenGLESTextureCache, these attributes
-    // should be present.
+    // should be present. However, on simulator this IOSurface attribute
+    // actually causes CVOpenGLESTextureCache to fail. b/144850076
     const void* keys[] = {
+#if !TARGET_IPHONE_SIMULATOR
       kCVPixelBufferIOSurfacePropertiesKey,
+#endif  // !TARGET_IPHONE_SIMULATOR
+
 #if TARGET_OS_OSX
       kCVPixelFormatOpenGLCompatibility,
 #else
       kCVPixelFormatOpenGLESCompatibility,
 #endif  // TARGET_OS_OSX
     };
-    const void* values[] = {empty_dict, kCFBooleanTrue};
+
+    const void* values[] = {
+#if !TARGET_IPHONE_SIMULATOR
+      empty_dict,
+#endif  // !TARGET_IPHONE_SIMULATOR
+      kCFBooleanTrue
+    };
+
     attrs = CFDictionaryCreate(
         kCFAllocatorDefault, keys, values, ABSL_ARRAYSIZE(values),
         &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);

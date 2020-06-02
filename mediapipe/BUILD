@@ -14,6 +14,9 @@
 
 licenses(["notice"])  # Apache 2.0
 
+# Note: yes, these need to use "//external:android/crosstool", not
+# @androidndk//:default_crosstool.
+
 config_setting(
     name = "android",
     values = {"crosstool_top": "//external:android/crosstool"},
@@ -130,6 +133,11 @@ config_setting(
         "ios_arm64e",
     ]
 ]
+
+config_setting(
+    name = "windows",
+    values = {"cpu": "x64_windows"},
+)
 
 exports_files(
     ["provisioning_profile.mobileprovision"],

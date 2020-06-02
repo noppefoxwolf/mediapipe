@@ -29,7 +29,7 @@ class ViewController2: UIViewController, AVCaptureVideoDataOutputSampleBufferDel
     }
     
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        displayLayer.enqueue(sampleBuffer)
+//        displayLayer.enqueue(sampleBuffer)
         let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer)
         tracker.processVideoFrame(pixelBuffer)
     }
@@ -39,7 +39,17 @@ class ViewController2: UIViewController, AVCaptureVideoDataOutputSampleBufferDel
     }
     
     func handTracker(_ handTracker: HandTracker!, didOutputPixelBuffer pixelBuffer: CVPixelBuffer!) {
-        
+        var timing = CMSampleTimingInfo.invalid
+        var sampleBuffer: CMSampleBuffer?
+        CMSampleBufferCreateForImageBuffer(allocator: kCFAllocatorDefault,
+                                           imageBuffer: pixelBuffer,
+                                           dataReady: true,
+                                           makeDataReadyCallback: nil,
+                                           refcon: nil,
+                                           formatDescription: try! .init(imageBuffer: pixelBuffer),
+                                           sampleTiming: &timing,
+                                           sampleBufferOut: &sampleBuffer)
+        displayLayer.enqueue(sampleBuffer!)
     }
 }
 

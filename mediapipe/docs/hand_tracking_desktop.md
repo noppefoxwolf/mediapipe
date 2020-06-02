@@ -13,10 +13,6 @@ We show the hand tracking demos with TensorFlow Lite model using the Webcam:
 
 -   [TensorFlow Lite Hand Tracking Demo with Webcam (GPU)](#tensorflow-lite-hand-tracking-demo-with-webcam-gpu)
 
-Note: Desktop GPU works only on Linux. Mesa drivers need to be installed. Please
-see
-[step 4 of "Installing on Debian and Ubuntu" in the installation guide](./install.md).
-
 Note: If MediaPipe depends on OpenCV 2, please see the
 [known issues with OpenCV 2](./object_detection_desktop.md#known-issues-with-opencv-2)
 section.
@@ -43,12 +39,15 @@ $ GLOG_logtostderr=1 bazel-bin/mediapipe/examples/desktop/hand_tracking/hand_tra
 
 ### TensorFlow Lite Hand Tracking Demo with Webcam (GPU)
 
+Note: This currently works only on Linux, and please first follow
+[OpenGL ES Setup on Linux Desktop](./gpu.md#opengl-es-setup-on-linux-desktop).
+
 To build and run the TensorFlow Lite example on desktop (GPU) with Webcam, run:
 
 ```bash
 # Video from webcam running on desktop GPU
-# This works only for linux currently
-$ bazel build -c opt --copt -DMESA_EGL_NO_X11_HEADERS \
+# This works only for Linux currently
+$ bazel build -c opt --copt -DMESA_EGL_NO_X11_HEADERS --copt -DEGL_NO_X11 \
     mediapipe/examples/desktop/hand_tracking:hand_tracking_gpu
 
 # It should print:
@@ -62,9 +61,6 @@ $ bazel build -c opt --copt -DMESA_EGL_NO_X11_HEADERS \
 $ GLOG_logtostderr=1 bazel-bin/mediapipe/examples/desktop/hand_tracking/hand_tracking_gpu \
     --calculator_graph_config_file=mediapipe/graphs/hand_tracking/hand_tracking_mobile.pbtxt
 ```
-
-Issues running? Please first
-[check that your GPU is supported](./gpu.md#desktop-gpu-linux)
 
 #### Graph
 
@@ -133,6 +129,7 @@ node {
   output_stream: "LANDMARKS:hand_landmarks"
   output_stream: "NORM_RECT:hand_rect_from_landmarks"
   output_stream: "PRESENCE:hand_presence"
+  output_stream: "HANDEDNESS:handedness"
 }
 
 # Caches a hand rectangle fed back from HandLandmarkSubgraph, and upon the
@@ -175,6 +172,7 @@ node {
   input_stream: "LANDMARKS:hand_landmarks"
   input_stream: "NORM_RECT:hand_rect"
   input_stream: "DETECTIONS:palm_detections"
+  input_stream: "HANDEDNESS:handedness"
   output_stream: "IMAGE:output_video"
 }
 

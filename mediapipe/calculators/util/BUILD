@@ -277,6 +277,41 @@ cc_test(
 )
 
 cc_library(
+    name = "clock_timestamp_calculator",
+    srcs = ["clock_timestamp_calculator.cc"],
+    visibility = [
+        "//visibility:public",
+    ],
+    deps = [
+        "//mediapipe/framework:calculator_framework",
+        "//mediapipe/framework:timestamp",
+        "//mediapipe/framework/deps:clock",
+        "//mediapipe/framework/port:logging",
+        "//mediapipe/framework/port:ret_check",
+        "//mediapipe/framework/port:status",
+        "@com_google_absl//absl/time",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
+    name = "clock_latency_calculator",
+    srcs = ["clock_latency_calculator.cc"],
+    visibility = [
+        "//visibility:public",
+    ],
+    deps = [
+        "//mediapipe/framework:calculator_framework",
+        "//mediapipe/framework:timestamp",
+        "//mediapipe/framework/port:logging",
+        "//mediapipe/framework/port:ret_check",
+        "//mediapipe/framework/port:status",
+        "@com_google_absl//absl/time",
+    ],
+    alwayslink = 1,
+)
+
+cc_library(
     name = "annotation_overlay_calculator",
     srcs = ["annotation_overlay_calculator.cc"],
     visibility = ["//visibility:public"],
@@ -321,7 +356,7 @@ cc_library(
         "//mediapipe:android": [
             "//mediapipe/util/android/file/base",
         ],
-        "//mediapipe:apple": [
+        "//mediapipe:ios": [
             "//mediapipe/util/android/file/base",
         ],
         "//mediapipe:macos": [
@@ -349,7 +384,7 @@ cc_library(
         "//mediapipe:android": [
             "//mediapipe/util/android/file/base",
         ],
-        "//mediapipe:apple": [
+        "//mediapipe:ios": [
             "//mediapipe/util/android/file/base",
         ],
         "//mediapipe:macos": [
@@ -926,7 +961,7 @@ cc_library(
         "//mediapipe:android": [
             "//mediapipe/util/android/file/base",
         ],
-        "//mediapipe:apple": [
+        "//mediapipe:ios": [
             "//mediapipe/util/android/file/base",
         ],
         "//mediapipe:macos": [
@@ -971,9 +1006,9 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "//mediapipe/framework:calculator_framework",
-        "//mediapipe/framework/port:file_helpers",
         "//mediapipe/framework/port:ret_check",
         "//mediapipe/framework/port:status",
+        "//mediapipe/util:resource_util",
     ],
     alwayslink = 1,
 )

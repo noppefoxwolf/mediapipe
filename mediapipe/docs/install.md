@@ -16,18 +16,15 @@ Choose your operating system:
 -   [Installing on Debian and Ubuntu](#installing-on-debian-and-ubuntu)
 -   [Installing on CentOS](#installing-on-centos)
 -   [Installing on macOS](#installing-on-macos)
+-   [Installing on Windows](#installing-on-windows)
 -   [Installing on Windows Subsystem for Linux (WSL)](#installing-on-windows-subsystem-for-linux-wsl)
 -   [Installing using Docker](#installing-using-docker)
 
-To build and run Android apps:
+To build and run Android example apps, see these
+[instuctions](./building_examples.md#android).
 
--   [Setting up Android SDK and NDK](#setting-up-android-sdk-and-ndk)
--   [Using MediaPipe with Gradle](#using-mediapipe-with-gradle)
--   [Using MediaPipe with Bazel](#using-mediapipe-with-bazel)
-
-To build and run iOS apps:
-
--   Please see the separate [iOS setup](./mediapipe_ios_setup.md) documentation.
+To build and run iOS example apps, see these
+[instuctions](./building_examples.md#ios).
 
 ### Installing on Debian and Ubuntu
 
@@ -40,12 +37,11 @@ To build and run iOS apps:
     $ cd mediapipe
     ```
 
-2.  Install Bazel (version between 1.0.0 and 1.2.1).
+2.  Install Bazel.
 
     Follow the official
     [Bazel documentation](https://docs.bazel.build/versions/master/install-ubuntu.html)
-    to install Bazel manually. Note that MediaPipe doesn't support Bazel 2.0.0+
-    yet.
+    to install Bazel 2.0 or higher.
 
 3.  Install OpenCV and FFmpeg.
 
@@ -111,7 +107,7 @@ To build and run iOS apps:
     # To compile with GPU support, replace
     --define MEDIAPIPE_DISABLE_GPU=1
     # with
-    --copt -DMESA_EGL_NO_X11_HEADERS
+    --copt -DMESA_EGL_NO_X11_HEADERS --copt -DEGL_NO_X11
     # when building GPU examples.
     ```
 
@@ -125,7 +121,7 @@ To build and run iOS apps:
         mediapipe/examples/desktop/hello_world:hello_world
 
     # If you are running on Linux desktop with GPU support enabled (via mesa drivers)
-    $ bazel run --copt -DMESA_EGL_NO_X11_HEADERS \
+    $ bazel run --copt -DMESA_EGL_NO_X11_HEADERS --copt -DEGL_NO_X11 \
         mediapipe/examples/desktop/hello_world:hello_world
 
     # Should print:
@@ -152,12 +148,11 @@ To build and run iOS apps:
     $ cd mediapipe
     ```
 
-2.  Install Bazel (version between 1.0.0 and 1.2.1).
+2.  Install Bazel.
 
     Follow the official
     [Bazel documentation](https://docs.bazel.build/versions/master/install-redhat.html)
-    to install Bazel manually. Note that MediaPipe doesn't support Bazel 2.0.0+
-    yet.
+    to install Bazel 2.0 or higher.
 
 3.  Install OpenCV.
 
@@ -241,23 +236,18 @@ To build and run iOS apps:
     $ cd mediapipe
     ```
 
-3.  Install Bazel (version between 1.0.0 and 1.1.0).
+3.  Install Bazel.
 
-    Option 1. Use package manager tool to install Bazel 1.1.0
+    Option 1. Use package manager tool to install Bazel
 
     ```bash
-    # If Bazel 1.1.0+ was installed.
-    $ brew uninstall bazel
-    # Install Bazel 1.1.0
-    $ brew install https://raw.githubusercontent.com/bazelbuild/homebrew-tap/f8a0fa981bcb1784a0d0823e14867b844e94fb3d/Formula/bazel.rb
-    $ brew link bazel
+    $ brew install bazel
     # Run 'bazel version' to check version of bazel
     ```
 
     Option 2. Follow the official
     [Bazel documentation](https://docs.bazel.build/versions/master/install-os-x.html#install-with-installer-mac-os-x)
-    to install any version of Bazel manually. Note that MediaPipe doesn't
-    support Bazel 1.1.0+ on macOS yet.
+    to install Bazel 2.0 or higher.
 
 4.  Install OpenCV and FFmpeg.
 
@@ -362,6 +352,111 @@ To build and run iOS apps:
     # Hello World!
     ```
 
+### Installing on Windows
+
+**Disclaimer**: Running MediaPipe on Windows is experimental.
+
+Note: building MediaPipe Android apps is still not possible on native
+Windows. Please do this in WSL instead and see the WSL setup instruction in the
+next section.
+
+1.  Install [MSYS2](https://www.msys2.org/) and edit the `%PATH%` environment
+    variable.
+
+    If MSYS2 is installed to `C:\msys64`, add `C:\msys64\usr\bin` to your
+    `%PATH%` environment variable.
+
+2.  Install necessary packages.
+
+    ```
+    C:\> pacman -S git patch unzip
+    ```
+
+3.  Install Python and allow the executable to edit the `%PATH%` environment
+    variable.
+
+    Download Python Windows executable from
+    https://www.python.org/downloads/windows/ and install.
+
+4.  Install Visual C++ Build Tools 2019 and WinSDK
+
+    Go to https://visualstudio.microsoft.com/visual-cpp-build-tools, download
+    build tools, and install Microsoft Visual C++ 2019 Redistributable and
+    Microsoft Build Tools 2019.
+
+    Download the WinSDK from
+    https://developer.microsoft.com/en-us/windows/downloads/windows-10-sdk/ and
+    install.
+
+5.  Install Bazel and add the location of the Bazel executable to the `%PATH%`
+    environment variable.
+
+    Follow the official
+    [Bazel documentation](https://docs.bazel.build/versions/master/install-windows.html)
+    to install Bazel 2.0 or higher.
+
+6.  Set Bazel variables.
+
+    ```
+    # Find the exact paths and version numbers from your local version.
+    C:\> set BAZEL_VS=C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools
+    C:\> set BAZEL_VC=C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC
+    C:\> set BAZEL_VC_FULL_VERSION=14.25.28610
+    C:\> set BAZEL_WINSDK_FULL_VERSION=10.1.18362.1
+    ```
+
+7.  Checkout MediaPipe repository.
+
+    ```
+    C:\Users\Username\mediapipe_repo> git clone https://github.com/google/mediapipe.git
+
+    # Change directory into MediaPipe root directory
+    C:\Users\Username\mediapipe_repo> cd mediapipe
+    ```
+
+8.  Install OpenCV.
+
+    Download the Windows executable from https://opencv.org/releases/ and
+    install. We currently use OpenCV 3.4.10. Remember to edit the [`WORKSPACE`]
+    file if OpenCV is not installed at `C:\opencv`.
+
+    ```
+    new_local_repository(
+        name = "windows_opencv",
+        build_file = "@//third_party:opencv_windows.BUILD",
+        path = "C:\\<path to opencv>\\build",
+    )
+    ```
+
+9.  Run the [Hello World desktop example](./hello_world_desktop.md).
+
+    Note: For building MediaPipe on Windows, please add `--action_env
+    PYTHON_BIN_PATH="C:/path/to/python.exe"` to the build command.
+    Alternatively, you can follow
+    [issue 724](https://github.com/google/mediapipe/issues/724) to fix the
+    python configuration manually.
+
+    ```
+    C:\Users\Username\mediapipe_repo>bazel build -c opt --define MEDIAPIPE_DISABLE_GPU=1 --action_env PYTHON_BIN_PATH="C:/python_36/python.exe" mediapipe/examples/desktop/hello_world
+
+    C:\Users\Username\mediapipe_repo>set GLOG_logtostderr=1
+
+    C:\Users\Username\mediapipe_repo>bazel-bin\mediapipe\examples\desktop\hello_world\hello_world.exe
+
+    # should print:
+    # I20200514 20:43:12.277598  1200 hello_world.cc:56] Hello World!
+    # I20200514 20:43:12.278597  1200 hello_world.cc:56] Hello World!
+    # I20200514 20:43:12.279618  1200 hello_world.cc:56] Hello World!
+    # I20200514 20:43:12.279618  1200 hello_world.cc:56] Hello World!
+    # I20200514 20:43:12.279618  1200 hello_world.cc:56] Hello World!
+    # I20200514 20:43:12.279618  1200 hello_world.cc:56] Hello World!
+    # I20200514 20:43:12.279618  1200 hello_world.cc:56] Hello World!
+    # I20200514 20:43:12.279618  1200 hello_world.cc:56] Hello World!
+    # I20200514 20:43:12.279618  1200 hello_world.cc:56] Hello World!
+    # I20200514 20:43:12.280613  1200 hello_world.cc:56] Hello World!
+
+    ```
+
 ### Installing on Windows Subsystem for Linux (WSL)
 
 Note: The pre-built OpenCV packages don't support cameras in WSL. Unless you
@@ -391,18 +486,18 @@ cameras. Alternatively, you use a video file as input.
     username@DESKTOP-TMVLBJ1:~$ sudo apt-get update && sudo apt-get install -y build-essential git python zip adb openjdk-8-jdk
     ```
 
-5.  Install Bazel (version between 1.0.0 and 1.2.1).
+5.  Install Bazel.
 
     ```bash
     username@DESKTOP-TMVLBJ1:~$ curl -sLO --retry 5 --retry-max-time 10 \
-    https://storage.googleapis.com/bazel/1.0.0/release/bazel-1.0.0-installer-linux-x86_64.sh && \
-    sudo mkdir -p /usr/local/bazel/1.0.0 && \
-    chmod 755 bazel-1.0.0-installer-linux-x86_64.sh && \
-    sudo ./bazel-1.0.0-installer-linux-x86_64.sh --prefix=/usr/local/bazel/1.0.0 && \
-    source /usr/local/bazel/1.0.0/lib/bazel/bin/bazel-complete.bash
+    https://storage.googleapis.com/bazel/2.0.0/release/bazel-2.0.0-installer-linux-x86_64.sh && \
+    sudo mkdir -p /usr/local/bazel/2.0.0 && \
+    chmod 755 bazel-2.0.0-installer-linux-x86_64.sh && \
+    sudo ./bazel-2.0.0-installer-linux-x86_64.sh --prefix=/usr/local/bazel/2.0.0 && \
+    source /usr/local/bazel/2.0.0/lib/bazel/bin/bazel-complete.bash
 
-    username@DESKTOP-TMVLBJ1:~$ /usr/local/bazel/1.0.0/lib/bazel/bin/bazel version && \
-    alias bazel='/usr/local/bazel/1.0.0/lib/bazel/bin/bazel'
+    username@DESKTOP-TMVLBJ1:~$ /usr/local/bazel/2.0.0/lib/bazel/bin/bazel version && \
+    alias bazel='/usr/local/bazel/2.0.0/lib/bazel/bin/bazel'
     ```
 
 6.  Checkout MediaPipe repository.
@@ -572,147 +667,8 @@ This will use a Docker image that will isolate mediapipe's installation from the
     docker run -i -t mediapipe:latest
     ``` -->
 
-### Setting up Android SDK and NDK
-
-Requirements:
-
-*   Java Runtime.
-*   Android SDK release 28.0.3 and above.
-*   Android NDK r17c and above.
-
-MediaPipe recommends setting up Android SDK and NDK via Android Studio, and see
-[next section](#setting-up-android-studio-with-mediapipe) for Android Studio
-setup. However, if you prefer using MediaPipe without Android Studio, please run
-[`setup_android_sdk_and_ndk.sh`] to download and setup Android SDK and NDK
-before building any Android example apps.
-
-If Android SDK and NDK are already installed (e.g., by Android Studio), set
-$ANDROID_HOME and $ANDROID_NDK_HOME to point to the installed SDK and NDK.
-
-```bash
-export ANDROID_HOME=<path to the Android SDK>
-export ANDROID_NDK_HOME=<path to the Android NDK>
-```
-
-In order to use MediaPipe on earlier Android versions, MediaPipe needs to switch
-to a lower Android API level. You can achieve this by specifying `api_level =
-<api level integer>` in android_ndk_repository() and/or android_sdk_repository()
-in the [`WORKSPACE`] file.
-
-Please verify all the necessary packages are installed.
-
-*   Android SDK Platform API Level 28 or 29
-*   Android SDK Build-Tools 28 or 29
-*   Android SDK Platform-Tools 28 or 29
-*   Android SDK Tools 26.1.1
-*   Android NDK 17c or above
-
-### Using MediaPipe with Gradle
-
-MediaPipe can be used within an existing project, such as a Gradle project,
-using the MediaPipe AAR target defined in mediapipe_aar.bzl. Please see the
-separate [MediaPipe Android Archive Library](./android_archive_library.md)
-documentation.
-
-### Using MediaPipe with Bazel
-
-The MediaPipe project can be imported to Android Studio using the Bazel plugins.
-This allows the MediaPipe examples and demos to be built and modified in Android
-Studio. To incorporate MediaPipe into an existing Android Studio project, see:
-"Using MediaPipe with Gradle". The steps below use Android Studio 3.5 to build
-and install a MediaPipe example app.
-
-1.  Install and launch Android Studio 3.5.
-
-2.  Select `Configure` | `SDK Manager` | `SDK Platforms`.
-
-    *   Verify that Android SDK Platform API Level 28 or 29 is installed.
-    *   Take note of the Android SDK Location, e.g.,
-        `/usr/local/home/Android/Sdk`.
-
-3.  Select `Configure` | `SDK Manager` | `SDK Tools`.
-
-    *   Verify that Android SDK Build-Tools 28 or 29 is installed.
-    *   Verify that Android SDK Platform-Tools 28 or 29 is installed.
-    *   Verify that Android SDK Tools 26.1.1 is installed.
-    *   Verify that Android NDK 17c or above is installed.
-    *   Take note of the Android NDK Location, e.g.,
-        `/usr/local/home/Android/Sdk/ndk-bundle` or
-        `/usr/local/home/Android/Sdk/ndk/20.0.5594570`.
-
-4.  Set environment variables `$ANDROID_HOME` and `$ANDROID_NDK_HOME` to point
-    to the installed SDK and NDK.
-
-    ```bash
-    export ANDROID_HOME=/usr/local/home/Android/Sdk
-
-    # If the NDK libraries are installed by a previous version of Android Studio, do
-    export ANDROID_NDK_HOME=/usr/local/home/Android/Sdk/ndk-bundle
-    # If the NDK libraries are installed by Android Studio 3.5, do
-    export ANDROID_NDK_HOME=/usr/local/home/Android/Sdk/ndk/<version number>
-    ```
-
-5.  Select `Configure` | `Plugins` install `Bazel`.
-
-6.  On Linux, select `File` | `Settings`| `Bazel settings`. On macos, select
-    `Android Studio` | `Preferences` | `Bazel settings`. Then, modify `Bazel
-    binary location` to be the same as the output of `$ which bazel`.
-
-7.  Select `Import Bazel Project`.
-
-    *   Select `Workspace`: `/path/to/mediapipe` and select `Next`.
-    *   Select `Generate from BUILD file`: `/path/to/mediapipe/BUILD` and select `Next`.
-    *   Modify `Project View` to be the following and select `Finish`.
-
-    ```
-    directories:
-      # read project settings, e.g., .bazelrc
-      .
-      -mediapipe/objc
-      -mediapipe/examples/ios
-
-    targets:
-      //mediapipe/examples/android/...:all
-      //mediapipe/java/...:all
-
-    android_sdk_platform: android-29
-    ```
-
-8.  Select `Bazel` | `Sync` | `Sync project with Build files`.
-
-    Note: Even after doing step 4, if you still see the error:
-    `"no such package '@androidsdk//': Either the path
-    attribute of android_sdk_repository or the ANDROID_HOME environment variable
-    must be set."`, please modify the **WORKSPACE** file to point
-    to your SDK and NDK library locations, as below:
-
-    ```
-    android_sdk_repository(
-        name = "androidsdk",
-        path = "/path/to/android/sdk"
-    )
-
-    android_ndk_repository(
-        name = "androidndk",
-        path = "/path/to/android/ndk"
-    )
-    ```
-
-9.  Connect an Android device to the workstation.
-
-10. Select `Run...` | `Edit Configurations...`.
-
-    *   Select `Templates` | `Bazel Command`.
-    *   Enter Target Expression:
-        `//mediapipe/examples/android/src/java/com/google/mediapipe/apps/facedetectioncpu`
-    *   Enter Bazel command: `mobile-install`.
-    *   Enter Bazel flags: `-c opt --config=android_arm64`.
-    *   Press the `[+]` button to add the new configuration.
-    *   Select `Run` to run the example app on the connected Android device.
-
 [`WORKSPACE`]: https://github.com/google/mediapipe/tree/master/WORKSPACE
 [`opencv_linux.BUILD`]: https://github.com/google/mediapipe/tree/master/third_party/opencv_linux.BUILD
 [`opencv_macos.BUILD`]: https://github.com/google/mediapipe/tree/master/third_party/opencv_macos.BUILD
 [`ffmpeg_macos.BUILD`]:https://github.com/google/mediapipe/tree/master/third_party/ffmpeg_macos.BUILD
 [`setup_opencv.sh`]: https://github.com/google/mediapipe/tree/master/setup_opencv.sh
-[`setup_android_sdk_and_ndk.sh`]: https://github.com/google/mediapipe/tree/master/setup_android_sdk_and_ndk.sh
